@@ -1,26 +1,17 @@
 import React, { Component } from 'react';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { getAllCategories, deleteCategory } from './../../api/category-api';
 import WithErrorHandlingComponent from '../../components/common/hoc/WithErrorHandling';
 import WithLoaderComponent from '../../components/common/hoc/WithLoader';
 import WithEmptyDataHandlingComponent from '../../components/common/hoc/WithEmptyDataHandling';
 import CategoryList from '../../components/category/category-list/CategoryList';
+import { fetchCategoriesThunk, deleteCategoryThunk } from './redux/thunks';
 
 class Categories extends Component {
-    state = {
-        categories : [],
-        error : false,
-        loading : true
-    };
 
     componentDidMount() {
-        getAllCategories()
-            .then(categories => this.setState({categories : categories.data, loading : false}))
-            .catch(err => {
-                console.error(err);
-                this.setState({error : true, loading : false});
-            });
+        this.props.fetchCategories();
     }
 
     navigateToCreateNew = () => {
@@ -28,15 +19,11 @@ class Categories extends Component {
     };
 
     handleDeleteCategory = (id) => {
-        deleteCategory(id)
-            .then(res => {
-                const categories = this.state.categories.filter(category => category.id !== id);
-                this.setState({categories});
-            }).catch(err => console.error(err));
+        this.props.deleteCategory(id);
     };
 
     render() {
-        const { error, loading, categories } = this.state;
+        const { error, loading, categories } = this.props;
 
         return (
             <WithLoaderComponent loading={loading}>
@@ -56,4 +43,15 @@ class Categories extends Component {
     }
 }
 
-export default withRouter(Categories);
+const mapStateToProps = state => ({
+    categories : state.categoriesReducer.categories,
+    loading : state.categoriesReducer.loading,
+    error : state.categoriesReducer.error
+});
+
+const mapDispatchToProps = dispatch => ({
+    fetchCategories : () => dispatch(fetchCategoriesThunk()),
+    deleteCategory : id => dispatch(deleteCategoryThunk(id))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Categories));

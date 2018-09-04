@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import { validate } from '../../utils/form-validator-util';
 import Alert from '../../components/common/Alert';
-import { saveNewCategory } from '../../api/category-api';
+import { createCategoryThunk } from './redux/thunks';
+import WithErrorHandlingComponent from '../../components/common/hoc/WithErrorHandling';
+import WithLoaderComponent from '../../components/common/hoc/WithLoader';
 
-export default class CreateCategory extends Component {
+class CreateCategory extends Component {
     state = {
         valid : false,
         submitted : false,
@@ -45,9 +49,11 @@ export default class CreateCategory extends Component {
 
         this.setState({...this.state, valid: allValid, submitted : true});
 
-        saveNewCategory(this.state.fields.name.value, this.state.fields.color.value)
-            .then(res => console.log(res))
-            .catch(err => console.error(err));
+        this.props.createCategory({
+            name : this.state.fields.name.value,
+            color : this.state.fields.color.value
+        });
+        this.navigateToList();
     }
 
     updateFieldValue = (field, e) => {
@@ -56,34 +62,53 @@ export default class CreateCategory extends Component {
         this.setState({field});
     };
 
+    navigateToList = () => {
+        this.props.history.push('/');
+    };
+
     render() {
         const { valid, submitted, fields } = this.state;
+        const { loading, error } = this.props;
 
         return(
-            <form onSubmit={(e) => this.handleSubmit(e)}>
-                { submitted && !valid && <Alert type="danger" message="Some fields are invalid!" /> }
-                <div className="form-group row">
-                    <label htmlFor="name" className="col-sm-2 col-form-label">Name:</label>
-                    <div className="col-sm-10">
-                        <input type="text" className="form-control" value={fields.name.value}
-                               id="name" onChange={(e) => this.updateFieldValue(fields.name, e)} />
-                    </div>
-                </div>
-                <div className="form-group row">
-                    <label htmlFor="color" className="col-sm-2 col-form-label">Color:</label>
-                    <div className="col-sm-10">
-                        <input type="text" className="form-control" value={fields.color.value}
-                               id="color" onChange={(e) => this.updateFieldValue(fields.color, e)} />
-                    </div>
-                </div>
-                <div className="form-group row">
-                    <div className="col-sm-10 col-sm-offset-2">
-                        <button type="submit" className="btn btn-success">Save</button>
-                    </div>
-                </div>
-            </form>
+            <WithLoaderComponent loading={loading}>
+                <WithErrorHandlingComponent error={error}>
+                    <form onSubmit={(e) => this.handleSubmit(e)}>
+                        { submitted && !valid && <Alert type="danger" message="Some fields are invalid!" /> }
+                        <div className="form-group row">
+                            <label htmlFor="name" className="col-sm-2 col-form-label">Name:</label>
+                            <div className="col-sm-10">
+                                <input type="text" className="form-control" value={fields.name.value}
+                                    id="name" onChange={(e) => this.updateFieldValue(fields.name, e)} />
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <label htmlFor="color" className="col-sm-2 col-form-label">Color:</label>
+                            <div className="col-sm-10">
+                                <input type="text" className="form-control" value={fields.color.value}
+                                    id="color" onChange={(e) => this.updateFieldValue(fields.color, e)} />
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <div className="col-sm-10 col-sm-offset-2">
+                                <button type="submit" className="btn btn-success">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </WithErrorHandlingComponent>
+            </WithLoaderComponent>
         );
     }
 
 }
 
+const mapStateToProps = state => ({
+    loading : state.createCategoryReducer.loading,
+    error : state.createCategoryReducer.error
+});
+
+const mapDispatchToProps = dispatch => ({
+    createCategory : (category) => dispatch(createCategoryThunk(category))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CreateCategory));

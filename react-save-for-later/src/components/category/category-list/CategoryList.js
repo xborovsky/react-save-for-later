@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CategoryListItem from '../categori-list-item/CategoryListItem';
+import CategoryListItem from '../category-list-item/CategoryListItem';
 
 const CategoryList = ({categories, onDeleteCategory}) =>
     categories.map(category =>
