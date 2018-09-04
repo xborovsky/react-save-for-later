@@ -9,6 +9,7 @@ import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Target;
 import javax.validation.Constraint;
+import javax.validation.Payload;
 
 @Target({ FIELD, METHOD, PARAMETER, ANNOTATION_TYPE })
 @Retention(RUNTIME)
@@ -16,5 +17,7 @@ import javax.validation.Constraint;
 public @interface HexColor {
 
     String message() default "{hex-color.invalid}";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
 
 }

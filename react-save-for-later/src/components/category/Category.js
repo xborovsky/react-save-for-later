@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import './Category.css';
+
 const Category = ({name, hexColor}) =>
-    <a href="#" className="badge" style={{backgroundColor : '#' + hexColor}}>{name}</a>
+    <a href="#" className="badge" style={{backgroundColor : `#${hexColor}`}}>{name}</a>
 ;
 
 Category.propTypes = {
