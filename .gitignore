@@ -1,13 +1,14 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+/react-save-for-later/node_modules
 
 # testing
-/coverage
+/react-save-for-later/coverage
 
 # production
-/build
+/react-save-for-later/build
+/SaveForLater/target
 
 # misc
 .DS_Store
