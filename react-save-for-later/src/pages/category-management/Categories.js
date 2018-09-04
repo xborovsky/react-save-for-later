@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom';
 
-import Category from '../../components/category/Category';
 import { getAllCategories, deleteCategory } from './../../api/category-api';
 import WithErrorHandlingComponent from '../../components/common/hoc/WithErrorHandling';
 import WithLoaderComponent from '../../components/common/hoc/WithLoader';
 import WithEmptyDataHandlingComponent from '../../components/common/hoc/WithEmptyDataHandling';
+import CategoryList from '../../components/category/category-list/CategoryList';
 
 class Categories extends Component {
     state = {
@@ -46,22 +46,8 @@ class Categories extends Component {
                             <i className="far fa-plus-square"></i> Create new
                         </button>
                         <WithEmptyDataHandlingComponent data={categories}>
-                            { categories && categories.length &&
-                                categories.map(category =>
-                                    <div key={category.id} className="col-sm-12 col-md-6 col-lg-4">
-                                        <div className="row">
-                                            <div className="col-sm-10">
-                                                <Category key={category.id}
-                                                        name={category.name}
-                                                        hexColor={category.colorHex} />
-                                            </div>
-                                            <div className="col-sm-2">
-                                                <i class="fas fa-trash-alt" onClick={() => this.handleDeleteCategory(category.id)}></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )
-                            }
+                            <CategoryList categories={categories}
+                                          onDeleteCategory={(id) => this.handleDeleteCategory(id)} />
                         </WithEmptyDataHandlingComponent>
                     </div>
                 </WithErrorHandlingComponent>
