@@ -52,8 +52,11 @@ class CreateCategory extends Component {
         this.props.createCategory({
             name : this.state.fields.name.value,
             color : this.state.fields.color.value
+        }).then(res => {
+            if (!this.props.error) {
+                this.navigateToList();
+            }
         });
-        this.navigateToList();
     }
 
     updateFieldValue = (field, e) => {
@@ -103,8 +106,8 @@ class CreateCategory extends Component {
 }
 
 const mapStateToProps = state => ({
-    loading : state.createCategoryReducer.loading,
-    error : state.createCategoryReducer.error
+    loading : state.categoriesReducer.loading,
+    error : state.categoriesReducer.error
 });
 
 const mapDispatchToProps = dispatch => ({

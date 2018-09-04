@@ -19,7 +19,10 @@ class Categories extends Component {
     };
 
     handleDeleteCategory = (id) => {
-        this.props.deleteCategory(id);
+        if (window.confirm('Do you really want to delete the selected category?')) {
+            this.props.deleteCategory(id);
+            this.props.fetchCategories();
+        }
     };
 
     render() {

@@ -33,8 +33,9 @@ export const deleteCategory = id => ({
     payload : id
 });
 
-export const deleteCategorySuccess = () => ({
-    type : constants.DELETE_CATEGORY_SUCCESS
+export const deleteCategorySuccess = (id) => ({
+    type : constants.DELETE_CATEGORY_SUCCESS,
+    payload : id
 });
 
 export const deleteCategoryError = (err) => ({

@@ -23,7 +23,7 @@ export const deleteCategoryThunk = id => {
     return dispatch => {
         dispatch(actions.deleteCategory());
         return deleteCategory(id)
-            .then(result => dispatch(actions.deleteCategorySuccess()))
+            .then(result => dispatch(actions.deleteCategorySuccess(id)))
             .catch(err => dispatch(actions.deleteCategoryError(err)));
     };
 };

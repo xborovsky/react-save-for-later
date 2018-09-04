@@ -47,6 +47,10 @@ public class CategoryResource {
         if (result.hasErrors()) {
             return new ResponseEntity<>(result.getAllErrors(), HttpStatus.NOT_ACCEPTABLE);
         } else {
+            if (categoryService.findCategoryByName(model.getName()) != null) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+
             categoryService.createCategory(model.getName(), model.getColor());
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
