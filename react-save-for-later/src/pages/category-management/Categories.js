@@ -15,7 +15,7 @@ class Categories extends Component {
     }
 
     navigateToCreateNew = () => {
-        this.props.history.push('/category/new');
+        this.props.history.push('/categories/new');
     };
 
     handleDeleteCategory = (id) => {
