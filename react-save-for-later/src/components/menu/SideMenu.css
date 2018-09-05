@@ -1,6 +1,5 @@
 .list-group-item a.active {
-    background-color: #007bff;
-    color: white;
+    color: #007bff;
 }
 
 .list-group-item a {
