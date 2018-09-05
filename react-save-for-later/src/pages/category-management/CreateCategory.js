@@ -74,32 +74,35 @@ class CreateCategory extends Component {
         const { loading, error } = this.props;
 
         return(
-            <WithLoaderComponent loading={loading}>
-                <WithErrorHandlingComponent error={error}>
-                    <form onSubmit={(e) => this.handleSubmit(e)}>
-                        { submitted && !valid && <Alert type="danger" message="Some fields are invalid!" /> }
-                        <div className="form-group row">
-                            <label htmlFor="name" className="col-sm-2 col-form-label">Name:</label>
-                            <div className="col-sm-10">
-                                <input type="text" className="form-control" value={fields.name.value}
-                                    id="name" onChange={(e) => this.updateFieldValue(fields.name, e)} />
+            <div>
+                <h1>Create category</h1>
+                <WithLoaderComponent loading={loading}>
+                    <WithErrorHandlingComponent error={error}>
+                        <form onSubmit={(e) => this.handleSubmit(e)}>
+                            { submitted && !valid && <Alert type="danger" message="Some fields are invalid!" /> }
+                            <div className="form-group row">
+                                <label htmlFor="name" className="col-sm-2 col-form-label">Name:</label>
+                                <div className="col-sm-10">
+                                    <input type="text" className="form-control" value={fields.name.value}
+                                        id="name" onChange={(e) => this.updateFieldValue(fields.name, e)} />
+                                </div>
                             </div>
-                        </div>
-                        <div className="form-group row">
-                            <label htmlFor="color" className="col-sm-2 col-form-label">Color:</label>
-                            <div className="col-sm-10">
-                                <input type="text" className="form-control" value={fields.color.value}
-                                    id="color" onChange={(e) => this.updateFieldValue(fields.color, e)} />
+                            <div className="form-group row">
+                                <label htmlFor="color" className="col-sm-2 col-form-label">Color:</label>
+                                <div className="col-sm-10">
+                                    <input type="text" className="form-control" value={fields.color.value}
+                                        id="color" onChange={(e) => this.updateFieldValue(fields.color, e)} />
+                                </div>
                             </div>
-                        </div>
-                        <div className="form-group row">
-                            <div className="col-sm-10 col-sm-offset-2">
-                                <button type="submit" className="btn btn-success">Save</button>
+                            <div className="form-group row">
+                                <div className="col-sm-10 col-sm-offset-2">
+                                    <button type="submit" className="btn btn-success">Save</button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </WithErrorHandlingComponent>
-            </WithLoaderComponent>
+                        </form>
+                    </WithErrorHandlingComponent>
+                </WithLoaderComponent>
+            </div>
         );
     }
 

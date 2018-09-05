@@ -29,21 +29,24 @@ class Categories extends Component {
         const { error, loading, categories } = this.props;
 
         return (
-            <WithLoaderComponent loading={loading}>
-                <WithErrorHandlingComponent error={error}>
-                    <div className="container">
-                        <div className="row">
-                            <button className="btn btn-primary" onClick={() => this.navigateToCreateNew()} title="Click to create a new category">
-                                <i className="far fa-plus-square"></i> Create new
-                            </button>
+            <div>
+                <h1>Categories</h1>
+                <WithLoaderComponent loading={loading}>
+                    <WithErrorHandlingComponent error={error}>
+                        <div className="container">
+                            <div className="row">
+                                <button className="btn btn-primary" onClick={() => this.navigateToCreateNew()} title="Click to create a new category">
+                                    <i className="far fa-plus-square"></i> Create new
+                                </button>
+                            </div>
+                            <WithEmptyDataHandlingComponent data={categories}>
+                                <CategoryList categories={categories}
+                                            onDeleteCategory={(id) => this.handleDeleteCategory(id)} />
+                            </WithEmptyDataHandlingComponent>
                         </div>
-                        <WithEmptyDataHandlingComponent data={categories}>
-                            <CategoryList categories={categories}
-                                        onDeleteCategory={(id) => this.handleDeleteCategory(id)} />
-                        </WithEmptyDataHandlingComponent>
-                    </div>
-                </WithErrorHandlingComponent>
-            </WithLoaderComponent>
+                    </WithErrorHandlingComponent>
+                </WithLoaderComponent>
+            </div>
         );
     }
 }
