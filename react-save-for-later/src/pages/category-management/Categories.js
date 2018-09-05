@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import WithErrorHandlingComponent from '../../components/common/hoc/WithErrorHandling';
@@ -14,10 +14,6 @@ class Categories extends Component {
         this.props.fetchCategories();
     }
 
-    navigateToCreateNew = () => {
-        this.props.history.push('/categories/new');
-    };
-
     handleDeleteCategory = (id) => {
         if (window.confirm('Do you really want to delete the selected category?')) {
             this.props.deleteCategory(id);
@@ -29,24 +25,16 @@ class Categories extends Component {
         const { error, loading, categories } = this.props;
 
         return (
-            <div>
-                <h1>Categories</h1>
-                <WithLoaderComponent loading={loading}>
-                    <WithErrorHandlingComponent error={error}>
-                        <div className="container">
-                            <div className="row">
-                                <button className="btn btn-primary" onClick={() => this.navigateToCreateNew()} title="Click to create a new category">
-                                    <i className="far fa-plus-square"></i> Create new
-                                </button>
-                            </div>
-                            <WithEmptyDataHandlingComponent data={categories}>
-                                <CategoryList categories={categories}
-                                            onDeleteCategory={(id) => this.handleDeleteCategory(id)} />
-                            </WithEmptyDataHandlingComponent>
-                        </div>
-                    </WithErrorHandlingComponent>
-                </WithLoaderComponent>
-            </div>
+            <WithLoaderComponent loading={loading}>
+                <WithErrorHandlingComponent error={error}>
+                    <div className="container">
+                        <WithEmptyDataHandlingComponent data={categories}>
+                            <CategoryList categories={categories}
+                                        onDeleteCategory={(id) => this.handleDeleteCategory(id)} />
+                        </WithEmptyDataHandlingComponent>
+                    </div>
+                </WithErrorHandlingComponent>
+            </WithLoaderComponent>
         );
     }
 }

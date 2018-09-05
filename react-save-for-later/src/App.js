@@ -4,8 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import './App.css';
 import Tasks from './pages/tasks/Tasks';
 import Notes from './pages/notes/Notes';
-import Categories from './pages/category-management/Categories';
-import CreateCategory from './pages/category-management/CreateCategory';
+import CategoriesContainer from './pages/category-management/CategoriesContainer';
 import MainMenu from './components/menu/MainMenu';
 
 class App extends Component {
@@ -16,8 +15,7 @@ class App extends Component {
         <Switch>
           <Route exact path='/' component={Tasks}/>
           <Route path='/notes' component={Notes}/>
-          <Route path='/categories' component={Categories}/>
-          <Route path='/categories/new' component={CreateCategory}/>
+          <Route path='/categories' component={CategoriesContainer}/>
         </Switch>
       </div>
     );

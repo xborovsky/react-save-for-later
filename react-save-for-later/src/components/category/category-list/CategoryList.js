@@ -5,7 +5,7 @@ import CategoryListItem from '../category-list-item/CategoryListItem';
 const CategoryList = ({categories, onDeleteCategory}) =>
     <div className="row">
         {categories.map(category =>
-            <div key={category.id} className="col-12 col-md-6 col-lg-4">
+            <div key={category.id} className="col-12">
                 <CategoryListItem category={category} onDeleteCategory={onDeleteCategory} />
             </div>
         )}
