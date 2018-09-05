@@ -106,8 +106,8 @@ class CreateCategory extends Component {
 }
 
 const mapStateToProps = state => ({
-    loading : state.categoriesReducer.loading,
-    error : state.categoriesReducer.error
+    loading : state.categories.loading,
+    error : state.categories.error
 });
 
 const mapDispatchToProps = dispatch => ({

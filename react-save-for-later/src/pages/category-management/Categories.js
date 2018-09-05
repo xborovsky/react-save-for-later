@@ -32,12 +32,14 @@ class Categories extends Component {
             <WithLoaderComponent loading={loading}>
                 <WithErrorHandlingComponent error={error}>
                     <div className="container">
-                        <button className="btn btn-primary" onClick={() => this.navigateToCreateNew()}>
-                            <i className="far fa-plus-square"></i> Create new
-                        </button>
+                        <div className="row">
+                            <button className="btn btn-primary" onClick={() => this.navigateToCreateNew()} title="Click to create a new category">
+                                <i className="far fa-plus-square"></i> Create new
+                            </button>
+                        </div>
                         <WithEmptyDataHandlingComponent data={categories}>
                             <CategoryList categories={categories}
-                                          onDeleteCategory={(id) => this.handleDeleteCategory(id)} />
+                                        onDeleteCategory={(id) => this.handleDeleteCategory(id)} />
                         </WithEmptyDataHandlingComponent>
                     </div>
                 </WithErrorHandlingComponent>
@@ -47,9 +49,9 @@ class Categories extends Component {
 }
 
 const mapStateToProps = state => ({
-    categories : state.categoriesReducer.categories,
-    loading : state.categoriesReducer.loading,
-    error : state.categoriesReducer.error
+    categories : state.categories.categories,
+    loading : state.categories.loading,
+    error : state.categories.error
 });
 
 const mapDispatchToProps = dispatch => ({

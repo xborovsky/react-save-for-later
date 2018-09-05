@@ -3,7 +3,7 @@ import React from 'react';
 const withEmptyDataHandling = WrappedElement => ({data, children}) =>
     <WrappedElement>
         { data && data.length && children }
-        { (!data || !data.length) && <div>No data created yet!</div> }
+        { (!data || !data.length) && <div className="col-12 text-center">No data created yet!</div> }
     </WrappedElement>
 ;
 

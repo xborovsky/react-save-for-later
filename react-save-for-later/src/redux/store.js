@@ -5,7 +5,7 @@ import { thunkMiddleware } from './thunk-middleware';
 
 const store = createStore(
     combineReducers({
-        categoriesReducer
+        categories : categoriesReducer
     }),
     applyMiddleware(thunkMiddleware)
 );

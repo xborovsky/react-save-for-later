@@ -1,4 +1,5 @@
 .badge {
     text-decoration: none !important;
-    color: black !important;
+    font-size: 10pt;
+    padding: 5px 10px;
 }
