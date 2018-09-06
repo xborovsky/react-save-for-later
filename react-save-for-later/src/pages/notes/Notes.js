@@ -6,6 +6,7 @@ import { fetchAllNotesThunk } from './redux/thunks';
 import WithErrorHandlingComponent from '../../components/common/hoc/WithErrorHandling';
 import WithLoaderComponent from '../../components/common/hoc/WithLoader';
 import WithEmptyDataHandlingComponent from '../../components/common/hoc/WithEmptyDataHandling';
+import NoteList from '../../components/note/note-list/NoteList';
 
 class Notes extends Component {
 
@@ -16,6 +17,10 @@ class Notes extends Component {
     navigateToCreateNew = () => {
         this.props.history.push('/notes/new');
     }
+
+    handleDeleteNote = (id) => {
+        console.log('TODO - handleDeleteNote ' + id);
+    };
 
     render() {
         const { notes, loading, error } = this.props;
@@ -32,7 +37,8 @@ class Notes extends Component {
                                 </button>
                             </div>
                             <WithEmptyDataHandlingComponent data={notes}>
-                                TODO
+                                <NoteList notes={notes}
+                                    onDeleteNote={(id) => this.handleDeleteNote(id)} />
                             </WithEmptyDataHandlingComponent>
                         </div>
                     </WithErrorHandlingComponent>

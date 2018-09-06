@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import WithErrorHandlingComponent from '../../components/common/hoc/WithErrorHandling';
@@ -50,4 +49,4 @@ const mapDispatchToProps = dispatch => ({
     deleteCategory : id => dispatch(deleteCategoryThunk(id))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Categories));
+export default connect(mapStateToProps, mapDispatchToProps)(Categories);
