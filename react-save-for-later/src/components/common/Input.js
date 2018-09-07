@@ -9,9 +9,9 @@ export const Input = ({ error,  ...props }) => (
     </div>
   );
 
-export const TextArea = ({ error, ...props }) => (
+export const TextArea = ({ error, reff, ...props }) => (
     <div>
-      <textarea {...props} className={props.className + (error ? ' is-invalid' : '')}></textarea>
+      <textarea {...props} ref={reff} className={props.className + (error ? ' is-invalid' : '')}></textarea>
       <div className="invalid-feedback">{error}</div>
     </div>
   );

@@ -21,6 +21,13 @@ export const notesReducer = (state = initialState, action) => {
             return {...state, loading : false, error : false};
         case constants.CREATE_NOTE_ERROR:
             return {...state, loading : false, error : true};
+
+        case constants.DELETE_NOTE:
+            return {...state, loading : true, error : false};
+        case constants.DELETE_NOTE_SUCCESS:
+            return {...state, loading : false, error : false};
+        case constants.DELETE_NOTE_ERROR:
+            return {...state, loading : false, error : true};
         default:
             return state;
     }

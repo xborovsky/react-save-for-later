@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { fetchAllNotesThunk } from './redux/thunks';
+import { fetchAllNotesThunk, deleteNoteThunk } from './redux/thunks';
 import WithErrorHandlingComponent from '../../components/common/hoc/WithErrorHandling';
 import WithLoaderComponent from '../../components/common/hoc/WithLoader';
 import WithEmptyDataHandlingComponent from '../../components/common/hoc/WithEmptyDataHandling';
@@ -19,7 +19,10 @@ class Notes extends Component {
     }
 
     handleDeleteNote = (id) => {
-        console.log('TODO - handleDeleteNote ' + id);
+        if (window.confirm('Do you really want to delete the selected note?')) {
+            this.props.deleteNote(id)
+                .then(() => this.props.fetchNotes());
+        }
     };
 
     render() {
@@ -31,11 +34,6 @@ class Notes extends Component {
                 <WithLoaderComponent loading={loading}>
                     <WithErrorHandlingComponent error={error}>
                         <div className="container">
-                            <div className="row">
-                                <button className="btn btn-primary" onClick={() => this.navigateToCreateNew()} title="Click to create a new note">
-                                    <i className="far fa-plus-square"></i> Create new
-                                </button>
-                            </div>
                             <WithEmptyDataHandlingComponent data={notes}>
                                 <NoteList notes={notes}
                                     onDeleteNote={(id) => this.handleDeleteNote(id)} />
@@ -56,7 +54,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    fetchNotes : () => dispatch(fetchAllNotesThunk())
+    fetchNotes : () => dispatch(fetchAllNotesThunk()),
+    deleteNote : id => dispatch(deleteNoteThunk(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Notes));

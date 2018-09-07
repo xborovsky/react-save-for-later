@@ -22,6 +22,7 @@ class CreateNote extends Component {
     componentDidMount() {
         getAllCategories()
             .then(categories => this.setState({categories : categories.data}))
+        this.descriptionInput.focus();
     }
 
     handleSubmit = (values) => {
@@ -48,12 +49,12 @@ class CreateNote extends Component {
                 <h1>Create new note</h1>
                 <WithLoaderComponent loading={loading}>
                     <WithErrorHandlingComponent error={error}>
-                        <Form rules={this.validationRules} onValues={values => console.log(values)}>
+                        <Form rules={this.validationRules}>
                             <div className="form-group row">
                                 <label htmlFor="description" className="col-sm-2 col-form-label">Description:</label>
                                 <div className="col-sm-10">
                                     <TextArea type="text" name="description" className="form-control" rows="10"
-                                        id="description" />
+                                        id="description" reff={input => { this.descriptionInput = input; }} />
                                 </div>
                             </div>
                             <div className="form-group row">

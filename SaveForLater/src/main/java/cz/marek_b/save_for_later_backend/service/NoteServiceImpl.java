@@ -4,7 +4,9 @@ import cz.marek_b.save_for_later_backend.dao.NoteDao;
 import cz.marek_b.save_for_later_backend.entity.Category;
 import cz.marek_b.save_for_later_backend.entity.Note;
 import cz.marek_b.save_for_later_backend.util.DateUtils;
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
@@ -31,6 +33,23 @@ public class NoteServiceImpl implements NoteService {
         noteDao.save(note);
 
         return note;
+    }
+
+    @Override
+    public void deleteNote(long id) {
+        noteDao.deleteById(id);
+    }
+
+    @Override
+    public Note findNote(long id) {
+        Optional<Note> note = noteDao.findById(id);
+        if (note.isPresent()) {
+            return note.get();
+        } else {
+            throw new IllegalStateException(
+                MessageFormat.format("Note with id={0} doest not exist!", id)
+            );
+        }
     }
 
 }

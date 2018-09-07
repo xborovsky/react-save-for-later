@@ -10,4 +10,8 @@ public interface NoteService {
 
     Note createNote(String description, Category category);
 
+    void deleteNote(long id);
+
+    Note findNote(long id);
+
 }

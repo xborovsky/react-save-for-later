@@ -34,6 +34,10 @@ class CreateCategory extends Component {
         }
     };
 
+    componentDidMount() {
+        this.nameInput.focus();
+    }
+
     handleSubmit(e) {
         e.preventDefault();
         const { fields } = this.state,
@@ -84,7 +88,8 @@ class CreateCategory extends Component {
                                 <label htmlFor="name" className="col-sm-2 col-form-label">Name:</label>
                                 <div className="col-sm-10">
                                     <input type="text" className="form-control" value={fields.name.value}
-                                        id="name" onChange={(e) => this.updateFieldValue(fields.name, e)} />
+                                        id="name" onChange={(e) => this.updateFieldValue(fields.name, e)}
+                                        ref={input => this.nameInput = input} />
                                 </div>
                             </div>
                             <div className="form-group row">

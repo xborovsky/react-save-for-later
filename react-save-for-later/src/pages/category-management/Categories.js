@@ -15,8 +15,8 @@ class Categories extends Component {
 
     handleDeleteCategory = (id) => {
         if (window.confirm('Do you really want to delete the selected category?')) {
-            this.props.deleteCategory(id);
-            this.props.fetchCategories();
+            this.props.deleteCategory(id)
+                .then(() => this.props.fetchCategories());
         }
     };
 
@@ -24,16 +24,19 @@ class Categories extends Component {
         const { error, loading, categories } = this.props;
 
         return (
-            <WithLoaderComponent loading={loading}>
-                <WithErrorHandlingComponent error={error}>
-                    <div className="container">
-                        <WithEmptyDataHandlingComponent data={categories}>
-                            <CategoryList categories={categories}
-                                        onDeleteCategory={(id) => this.handleDeleteCategory(id)} />
-                        </WithEmptyDataHandlingComponent>
-                    </div>
-                </WithErrorHandlingComponent>
-            </WithLoaderComponent>
+            <div className="container">
+                <h1>Categories</h1>
+                <WithLoaderComponent loading={loading}>
+                    <WithErrorHandlingComponent error={error}>
+                        <div className="container">
+                            <WithEmptyDataHandlingComponent data={categories}>
+                                <CategoryList categories={categories}
+                                            onDeleteCategory={(id) => this.handleDeleteCategory(id)} />
+                            </WithEmptyDataHandlingComponent>
+                        </div>
+                    </WithErrorHandlingComponent>
+                </WithLoaderComponent>
+            </div>
         );
     }
 }

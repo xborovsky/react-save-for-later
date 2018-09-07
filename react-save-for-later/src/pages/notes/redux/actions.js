@@ -27,3 +27,17 @@ export const saveNoteError = error => ({
     type : constants.CREATE_NOTE_ERROR,
     error
 });
+
+export const deleteNote = id => ({
+    type : constants.DELETE_NOTE,
+    payload : id
+});
+
+export const deleteNoteSuccess = () => ({
+    type : constants.DELETE_NOTE_SUCCESS
+});
+
+export const deleteNoteError = error => ({
+    type : constants.DELETE_NOTE_ERROR,
+    error
+});
