@@ -15,9 +15,6 @@ const MainMenu = () =>
                 <li className="nav-item">
                     <NavLink to="/notes" className="nav-link" activeClassName="active">Notes</NavLink>
                 </li>
-                {/*<li className="nav-item active">
-                    <a className="nav-link" href="#">Tasks</a>
-                </li>*/}
                 <li className="nav-item dropdown">
                     <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"

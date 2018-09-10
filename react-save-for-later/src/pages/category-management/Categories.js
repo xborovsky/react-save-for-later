@@ -24,7 +24,7 @@ class Categories extends Component {
         const { error, loading, categories } = this.props;
 
         return (
-            <div className="container">
+            <div className="container main">
                 <h1>Categories</h1>
                 <WithLoaderComponent loading={loading}>
                     <WithErrorHandlingComponent error={error}>

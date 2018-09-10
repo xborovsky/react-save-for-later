@@ -29,7 +29,7 @@ class Notes extends Component {
         const { notes, loading, error } = this.props;
 
         return (
-            <div className="container">
+            <div className="container main">
                 <h1>Notes</h1>
                 <WithLoaderComponent loading={loading}>
                     <WithErrorHandlingComponent error={error}>

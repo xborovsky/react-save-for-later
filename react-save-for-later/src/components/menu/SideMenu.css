@@ -1,8 +1,8 @@
-.list-group-item a.active {
+.side-menu a.active {
     color: #007bff;
 }
 
-.list-group-item a {
+.side-menu a {
     text-decoration: none;
     color: black;
 }

@@ -6,7 +6,7 @@ import SideMenu from '../../components/menu/SideMenu';
 const CategoriesSideMenu = () =>
     <SideMenu>
         <li className="list-group-item">
-            <NavLink to="/categories" activeClassName="active">
+            <NavLink to="/categories" activeClassName="active" exact>
                 <i className="fas fa-list"></i> Categories list
             </NavLink>
         </li>
