@@ -52,4 +52,10 @@ public class NoteServiceImpl implements NoteService {
         }
     }
 
+    @Override
+    public List<Note> find(String text, List<Long> categoryIds) {
+        return noteDao.findByTextAndCategories(text, categoryIds,
+            Sort.by(Order.desc(Note.COLUMN_CREATED)));
+    }
+
 }

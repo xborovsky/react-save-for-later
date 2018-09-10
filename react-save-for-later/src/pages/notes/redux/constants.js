@@ -9,3 +9,5 @@ export const CREATE_NOTE_ERROR = 'create-note-error';
 export const DELETE_NOTE = 'delete-note';
 export const DELETE_NOTE_SUCCESS = 'delete-note-success';
 export const DELETE_NOTE_ERROR = 'delete-note-error';
+
+export const FILTER_NOTES = 'filter-notes';

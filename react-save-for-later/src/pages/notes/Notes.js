@@ -2,16 +2,26 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { fetchAllNotesThunk, deleteNoteThunk } from './redux/thunks';
+import { fetchAllNotesThunk, deleteNoteThunk, filterNotesThunk } from './redux/thunks';
+import { fetchCategoriesThunk } from '../category-management/redux/thunks';
 import WithErrorHandlingComponent from '../../components/common/hoc/WithErrorHandling';
 import WithLoaderComponent from '../../components/common/hoc/WithLoader';
 import WithEmptyDataHandlingComponent from '../../components/common/hoc/WithEmptyDataHandling';
 import NoteList from '../../components/note/note-list/NoteList';
+import NoteSearch from './NoteSearch';
 
 class Notes extends Component {
+    state = {
+        instantSearchTimeout : null,
+        filter : {
+            search : '',
+            categories : []
+        }
+    };
 
     componentDidMount() {
         this.props.fetchNotes();
+        this.props.fetchCategories();
     }
 
     navigateToCreateNew = () => {
@@ -25,12 +35,65 @@ class Notes extends Component {
         }
     };
 
+    handleInstantSearch = e => {
+        const timeout = this.state.instantSearchTimeout;
+        if (timeout) {
+            clearInterval(timeout);
+            this.setState({instantSearchTimeout : null});
+        }
+
+        const val = e.target.value;
+        this.setState(prevState => ({
+            ...prevState,
+            filter : {
+                ...prevState.filter,
+                search : val
+                }
+            }),
+            () => {
+                const newTimeout = setTimeout(() => {
+                    this.doFilter();
+                }, 250);
+                this.setState({instantSearchTimeout : newTimeout});
+            }
+        );
+    };
+
+    handleCategoriesSelected = selectedValues => {
+        var value = [];
+        for (var i = 0, l = selectedValues.length; i < l; i++) {
+            value.push(selectedValues[i].value);
+        }
+        this.setState(prevState => ({
+            ...prevState,
+            filter : {
+                ...prevState.filter,
+                categories : value
+                }
+            }),
+            () => {
+                this.doFilter();
+            }
+        );
+    };
+
+    doFilter = () => {
+        const { search, categories } = this.state.filter;
+        if ((search && search.trim().length) ||
+            (categories && categories.length)) {
+            this.props.filterNotes(search, categories);
+        } else {
+            this.props.fetchNotes();
+        }
+    };
+
     render() {
-        const { notes, loading, error } = this.props;
+        const { notes, loading, error, categories } = this.props;
 
         return (
             <div className="container main">
                 <h1>Notes</h1>
+                <NoteSearch allCategories={categories} onInstantSearch={this.handleInstantSearch} onCategoriesSelected={this.handleCategoriesSelected} />
                 <WithLoaderComponent loading={loading}>
                     <WithErrorHandlingComponent error={error}>
                         <div className="container">
@@ -50,12 +113,15 @@ class Notes extends Component {
 const mapStateToProps = state => ({
     notes : state.notes.notes,
     loading : state.notes.loading,
-    error : state.notes.error
+    error : state.notes.error,
+    categories : state.categories.categories
 });
 
 const mapDispatchToProps = dispatch => ({
     fetchNotes : () => dispatch(fetchAllNotesThunk()),
-    deleteNote : id => dispatch(deleteNoteThunk(id))
+    filterNotes : (text, categories) => dispatch(filterNotesThunk(text, categories)),
+    deleteNote : id => dispatch(deleteNoteThunk(id)),
+    fetchCategories : () => dispatch(fetchCategoriesThunk())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Notes));

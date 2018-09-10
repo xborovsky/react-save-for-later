@@ -41,3 +41,8 @@ export const deleteNoteError = error => ({
     type : constants.DELETE_NOTE_ERROR,
     error
 });
+
+export const filterNotes = (text, categories) => ({
+    type : constants.FILTER_NOTES,
+    text, categories
+});

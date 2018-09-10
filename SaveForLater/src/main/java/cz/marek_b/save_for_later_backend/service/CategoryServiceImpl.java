@@ -4,6 +4,7 @@ import cz.marek_b.save_for_later_backend.dao.CategoryDao;
 import cz.marek_b.save_for_later_backend.entity.Category;
 import cz.marek_b.save_for_later_backend.util.DateUtils;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> findAll() {
         return categoryDao.findAll();
+    }
+
+    @Override
+    public List<Category> find(Long[] ids) {
+        return categoryDao.findAllById(Arrays.asList(ids));
     }
 
     @Override

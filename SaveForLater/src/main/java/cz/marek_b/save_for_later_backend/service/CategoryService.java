@@ -7,6 +7,8 @@ public interface CategoryService {
 
     List<Category> findAll();
 
+    List<Category> find(Long[] ids);
+
     Category createCategory(String name, String colorHex);
 
     void deleteCategory(long id);

@@ -14,3 +14,11 @@ export const saveNote = (description, category) =>
 
 export const deleteNote = id =>
     axios.delete(`${BASE_URL}/notes/${id}`);
+
+export const fetchNotes = (text, categories) => {
+    const categoriesParam = categories && categories.length ?
+        categories.map(category => `&category=${category}`).join('') :
+        null;
+
+    return axios.get(`${BASE_URL}/notes?text=${text || ''}${categoriesParam || ''}`);
+};

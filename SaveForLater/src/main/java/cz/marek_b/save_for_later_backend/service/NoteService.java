@@ -14,4 +14,5 @@ public interface NoteService {
 
     Note findNote(long id);
 
+    List<Note> find(String text, List<Long> categoryIds);
 }

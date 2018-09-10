@@ -1,4 +1,4 @@
-import { fetchAllNotes, saveNote, deleteNote } from '../../../api/note-api';
+import { fetchAllNotes, saveNote, deleteNote, fetchNotes } from '../../../api/note-api';
 import * as actions from './actions';
 
 export const fetchAllNotesThunk = () => {
@@ -24,4 +24,11 @@ export const deleteNoteThunk = id => dispatch => {
     return deleteNote(id)
         .then(result => dispatch(actions.deleteNoteSuccess()))
         .catch(error => dispatch(actions.deleteNoteError(error)))
+};
+
+export const filterNotesThunk = (text, categories) => dispatch => {
+    dispatch(actions.filterNotes());
+    return fetchNotes(text, categories)
+        .then(result => dispatch(actions.fetchNotesSuccess(result.data)))
+        .catch(error => dispatch(actions.fetchNotesError(error)))
 };
