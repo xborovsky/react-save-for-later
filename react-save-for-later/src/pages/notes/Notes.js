@@ -59,6 +59,23 @@ class Notes extends Component {
         );
     };
 
+    handleSearchTextCleared = () => {
+        this.setState(prevState => ({
+            ...prevState,
+            filter : {
+                ...prevState.filter,
+                search : ''
+                }
+            }),
+            () => {
+                const newTimeout = setTimeout(() => {
+                    this.doFilter();
+                }, 250);
+                this.setState({instantSearchTimeout : newTimeout});
+            }
+        );
+    };
+
     handleCategoriesSelected = selectedValues => {
         var value = [];
         for (var i = 0, l = selectedValues.length; i < l; i++) {
@@ -93,7 +110,12 @@ class Notes extends Component {
         return (
             <div className="container main">
                 <h1>Notes</h1>
-                <NoteSearch allCategories={categories} onInstantSearch={this.handleInstantSearch} onCategoriesSelected={this.handleCategoriesSelected} />
+                <NoteSearch
+                    searchVal={this.state.filter.search}
+                    allCategories={categories}
+                    onInstantSearch={this.handleInstantSearch}
+                    onCategoriesSelected={this.handleCategoriesSelected}
+                    onSearchTextCleared={this.handleSearchTextCleared} />
                 <WithLoaderComponent loading={loading}>
                     <WithErrorHandlingComponent error={error}>
                         <div className="container">
