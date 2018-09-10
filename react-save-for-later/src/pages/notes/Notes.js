@@ -43,13 +43,8 @@ class Notes extends Component {
         }
 
         const val = e.target.value;
-        this.setState(prevState => ({
-            ...prevState,
-            filter : {
-                ...prevState.filter,
-                search : val
-                }
-            }),
+        this.doSetFilterState(
+            {search : val},
             () => {
                 const newTimeout = setTimeout(() => {
                     this.doFilter();
@@ -60,13 +55,8 @@ class Notes extends Component {
     };
 
     handleSearchTextCleared = () => {
-        this.setState(prevState => ({
-            ...prevState,
-            filter : {
-                ...prevState.filter,
-                search : ''
-                }
-            }),
+        this.doSetFilterState(
+            {search : ''},
             () => {
                 const newTimeout = setTimeout(() => {
                     this.doFilter();
@@ -81,13 +71,8 @@ class Notes extends Component {
         for (var i = 0, l = selectedValues.length; i < l; i++) {
             value.push(selectedValues[i].value);
         }
-        this.setState(prevState => ({
-            ...prevState,
-            filter : {
-                ...prevState.filter,
-                categories : value
-                }
-            }),
+        this.doSetFilterState(
+            {categories : value},
             () => {
                 this.doFilter();
             }
@@ -102,6 +87,18 @@ class Notes extends Component {
         } else {
             this.props.fetchNotes();
         }
+    };
+
+    doSetFilterState = (obj, callback) => {
+        this.setState(prevState => ({
+            ...prevState,
+            filter : {
+                ...prevState.filter,
+                [Object.keys(obj)[0]] : Object.values(obj)[0]
+                }
+            }),
+            () => callback()
+        );
     };
 
     render() {
