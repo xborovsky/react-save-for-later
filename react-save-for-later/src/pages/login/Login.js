@@ -4,30 +4,21 @@ import { connect } from 'react-redux';
 
 import WithErrorHandling from '../../components/common/hoc/WithErrorHandling';
 import SocialButton from './SocialButton';
+import { loginSuccessThunk } from './redux/thunk';
 import { loginSuccess, loginError, logoutSuccess, logoutError } from './redux/actions';
 
 class Login extends Component {
+
     handleLogin = user => {
         this.props.onSuccessLogin(user);
+        this.props.onSuccess();
         this.props.history.push('/tasks');
-    };
+    }
 
     handleLoginError = err => {
         console.error(err);
         this.props.onErrorLogin(err);
-    };
-
-    handleLogout = () => {
-        console.log();
-    };
-
-    handleLogoutError = err => {
-        this.props.onErrorLogout(err);
-    };
-
-    onLogoutSuccess = () => {
-        this.props.onSuccessLogout();
-    };
+    }
 
     render() {
         const { error } = this.props;
@@ -58,10 +49,8 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    onSuccessLogin : user => dispatch(loginSuccess(user)),
-    onErrorLogin : error => dispatch(loginError(error)),
-    onSuccessLogout : () => dispatch(logoutSuccess()),
-    onErrorLogout : error => dispatch(logoutError(error)),
+    onSuccessLogin : user => dispatch(loginSuccessThunk(user)),
+    onErrorLogin : error => dispatch(loginError(error))
 });
 
 export default connect(null, mapDispatchToProps)(withRouter(Login));
