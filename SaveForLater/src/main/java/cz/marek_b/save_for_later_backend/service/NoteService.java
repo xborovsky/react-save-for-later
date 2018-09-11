@@ -5,8 +5,9 @@ import cz.marek_b.save_for_later_backend.entity.Note;
 import java.util.List;
 
 public interface NoteService {
+    int DEFAULT_PAGE_SISE = 10;
 
-    List<Note> findAll();
+    List<Note> findAll(int offset);
 
     Note createNote(String description, Category category);
 
@@ -14,5 +15,5 @@ public interface NoteService {
 
     Note findNote(long id);
 
-    List<Note> find(String text, List<Long> categoryIds);
+    List<Note> find(String text, List<Long> categoryIds, int offset);
 }

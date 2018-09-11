@@ -1,16 +1,16 @@
 import * as constants from './constants';
 
-export const fetchNotes = () => ({
-    type : constants.FETCH_ALL_NOTES
+export const fetchNextNotes = () => ({
+    type : constants.FETCH_NEXT_NOTES
 });
 
 export const fetchNotesSuccess = notes => ({
-    type : constants.FETCH_ALL_NOTES_SUCCESS,
+    type : constants.FETCH_NOTES_SUCCESS,
     payload : notes
 });
 
 export const fetchNotesError = error => ({
-    type : constants.FETCH_ALL_NOTES_ERROR,
+    type : constants.FETCH_NOTES_ERROR,
     error
 });
 
@@ -42,7 +42,6 @@ export const deleteNoteError = error => ({
     error
 });
 
-export const filterNotes = (text, categories) => ({
-    type : constants.FILTER_NOTES,
-    text, categories
+export const resetOffset = () => ({
+    type : constants.RESET_OFFSET
 });

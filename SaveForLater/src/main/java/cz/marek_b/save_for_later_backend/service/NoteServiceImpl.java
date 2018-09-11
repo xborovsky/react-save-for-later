@@ -8,6 +8,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,10 @@ public class NoteServiceImpl implements NoteService {
     private NoteDao noteDao;
 
     @Override
-    public List<Note> findAll() {
-        return noteDao.findAll(Sort.by(Order.desc(Note.COLUMN_CREATED)));
+    public List<Note> findAll(int offset) {
+        return noteDao.findAll(
+            PageRequest.of(offset, DEFAULT_PAGE_SISE, Sort.by(Order.desc(Note.COLUMN_CREATED)))
+        ).getContent();
     }
 
     @Override
@@ -53,9 +56,10 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public List<Note> find(String text, List<Long> categoryIds) {
+    public List<Note> find(String text, List<Long> categoryIds, int offset) {
         return noteDao.findByTextAndCategories(text, categoryIds,
-            Sort.by(Order.desc(Note.COLUMN_CREATED)));
+            PageRequest.of(offset, DEFAULT_PAGE_SISE, Sort.by(Order.desc(Note.COLUMN_CREATED)))
+        ).getContent();
     }
 
 }

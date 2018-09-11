@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 
 import { fetchAllNotesThunk, deleteNoteThunk, filterNotesThunk } from './redux/thunks';
 import { fetchCategoriesThunk } from '../category-management/redux/thunks';
-import WithErrorHandlingComponent from '../../components/common/hoc/WithErrorHandling';
-import WithLoaderComponent from '../../components/common/hoc/WithLoader';
+import { resetOffset } from './redux/actions';
 import WithEmptyDataHandlingComponent from '../../components/common/hoc/WithEmptyDataHandling';
 import NoteList from '../../components/note/note-list/NoteList';
 import NoteSearch from './NoteSearch';
+import Alert from '../../components/common/Alert';
 
 class Notes extends Component {
     state = {
@@ -20,7 +20,8 @@ class Notes extends Component {
     };
 
     componentDidMount() {
-        this.props.fetchNotes();
+        this.props.resetOffset();
+        this.props.filterNotes(this.props.offset);
         this.props.fetchCategories();
     }
 
@@ -29,6 +30,7 @@ class Notes extends Component {
     }
 
     handleDeleteNote = (id) => {
+        // TODO lepsie
         if (window.confirm('Do you really want to delete the selected note?')) {
             this.props.deleteNote(id)
                 .then(() => this.props.fetchNotes());
@@ -36,6 +38,7 @@ class Notes extends Component {
     };
 
     handleInstantSearch = e => {
+        this.props.resetOffset();
         const timeout = this.state.instantSearchTimeout;
         if (timeout) {
             clearInterval(timeout);
@@ -55,6 +58,7 @@ class Notes extends Component {
     };
 
     handleSearchTextCleared = () => {
+        this.props.resetOffset();
         this.doSetFilterState(
             {search : ''},
             () => {
@@ -67,6 +71,7 @@ class Notes extends Component {
     };
 
     handleCategoriesSelected = selectedValues => {
+        this.props.resetOffset();
         var value = [];
         for (var i = 0, l = selectedValues.length; i < l; i++) {
             value.push(selectedValues[i].value);
@@ -80,13 +85,9 @@ class Notes extends Component {
     };
 
     doFilter = () => {
-        const { search, categories } = this.state.filter;
-        if ((search && search.trim().length) ||
-            (categories && categories.length)) {
-            this.props.filterNotes(search, categories);
-        } else {
-            this.props.fetchNotes();
-        }
+        const { search, categories } = this.state.filter,
+              { offset } = this.props;
+        this.props.filterNotes(offset, search, categories);
     };
 
     doSetFilterState = (obj, callback) => {
@@ -102,7 +103,7 @@ class Notes extends Component {
     };
 
     render() {
-        const { notes, loading, error, categories } = this.props;
+        const { notes, loading, error, categories, hasMoreRecords } = this.props;
 
         return (
             <div className="container main">
@@ -113,16 +114,20 @@ class Notes extends Component {
                     onInstantSearch={this.handleInstantSearch}
                     onCategoriesSelected={this.handleCategoriesSelected}
                     onSearchTextCleared={this.handleSearchTextCleared} />
-                <WithLoaderComponent loading={loading}>
-                    <WithErrorHandlingComponent error={error}>
-                        <div className="container">
-                            <WithEmptyDataHandlingComponent data={notes}>
-                                <NoteList notes={notes}
-                                    onDeleteNote={(id) => this.handleDeleteNote(id)} />
-                            </WithEmptyDataHandlingComponent>
-                        </div>
-                    </WithErrorHandlingComponent>
-                </WithLoaderComponent>
+
+                <div className="container">
+                    {!error && !loading &&
+                        <WithEmptyDataHandlingComponent data={notes}>
+                            <NoteList notes={notes}
+                                onDeleteNote={(id) => this.handleDeleteNote(id)} />
+                        </WithEmptyDataHandlingComponent>
+                    }
+                    { error ? <Alert type="danger" message="Error loading data!" /> :
+                        loading ? <i className="fa fa-spinner fa-spin"></i> :
+                            hasMoreRecords && <button type="button" className="btn btn-primary"
+                                onClick={() => this.doFilter()}>Load next...</button>
+                    }
+                </div>
             </div>
         );
     }
@@ -133,14 +138,16 @@ const mapStateToProps = state => ({
     notes : state.notes.notes,
     loading : state.notes.loading,
     error : state.notes.error,
+    offset : state.notes.offset,
+    hasMoreRecords : state.notes.hasMoreRecords,
     categories : state.categories.categories
 });
 
 const mapDispatchToProps = dispatch => ({
-    fetchNotes : () => dispatch(fetchAllNotesThunk()),
-    filterNotes : (text, categories) => dispatch(filterNotesThunk(text, categories)),
+    filterNotes : (offset, text, categories) => dispatch(filterNotesThunk(offset, text, categories)),
     deleteNote : id => dispatch(deleteNoteThunk(id)),
-    fetchCategories : () => dispatch(fetchCategoriesThunk())
+    fetchCategories : () => dispatch(fetchCategoriesThunk()),
+    resetOffset : () => dispatch(resetOffset())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Notes));

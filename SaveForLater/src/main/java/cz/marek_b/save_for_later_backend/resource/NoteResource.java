@@ -37,11 +37,11 @@ public class NoteResource {
     @GetMapping
     @ResponseBody
     public List<Note> filterNotes(@RequestParam(value = "text", required = false, defaultValue = "") String text,
-            @RequestParam(value = "category", required = false, defaultValue = "") Long[] categoriesIds) {
-        System.out.println("text: " + text);
-        System.out.println("categoriesIds: " + (categoriesIds == null ? "null" : Arrays.toString(categoriesIds)));
+            @RequestParam(value = "category", required = false, defaultValue = "") Long[] categoriesIds,
+            @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset) {
+        System.out.println("offset: " + offset);
         if (text.isEmpty() && categoriesIds.length == 0) {
-            return noteService.findAll();
+            return noteService.findAll(offset);
         }
 
         List<Long> categories = Arrays.asList(categoriesIds);
@@ -49,7 +49,7 @@ public class NoteResource {
             categories = Lists.transform(categoryService.findAll(), (Category category) -> category.getId() );
         }
 
-        return noteService.find(text, categories);
+        return noteService.find(text, categories, offset);
     }
 
     @PostMapping("/new")
