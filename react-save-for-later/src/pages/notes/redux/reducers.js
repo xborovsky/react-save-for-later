@@ -14,8 +14,8 @@ export const notesReducer = (state = initialState, action) => {
             return {...state, loading : true, error : false};
         case constants.FETCH_NOTES_SUCCESS:
             return {...state,
-                notes : [...state.notes, ...action.payload],
-                offset: state.offset + action.payload.length,
+                notes : action.offset === 0 ? action.payload : [...state.notes, ...action.payload],
+                offset: (action.offset === 0 ? 0 : state.offset) + action.payload.length,
                 loading : false,
                 error : false,
                 hasMoreRecords : action.payload.length > 0
@@ -36,9 +36,6 @@ export const notesReducer = (state = initialState, action) => {
             return {...state, loading : false, error : false};
         case constants.DELETE_NOTE_ERROR:
             return {...state, loading : false, error : true};
-
-        case constants.RESET_OFFSET:
-            return {...state, offset : 0};
 
         default:
             return state;

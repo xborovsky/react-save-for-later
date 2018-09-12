@@ -12,7 +12,7 @@ class Login extends Component {
     handleLogin = user => {
         this.props.onSuccessLogin(user);
         this.props.onSuccess();
-        this.props.history.push('/tasks');
+        this.props.history.push('/notes');
     }
 
     handleLoginError = err => {

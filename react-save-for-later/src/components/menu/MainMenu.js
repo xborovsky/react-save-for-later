@@ -11,9 +11,6 @@ const MainMenu = ({authentication, onLogout}) =>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item">
-                        <NavLink to="/tasks" className="nav-link" activeClassName="active">Tasks</NavLink>
-                    </li>
-                    <li className="nav-item">
                         <NavLink to="/notes" className="nav-link" activeClassName="active">Notes</NavLink>
                     </li>
                     <li className="nav-item dropdown">

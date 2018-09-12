@@ -9,7 +9,9 @@ const NoteSearch = ({searchVal, allCategories, onInstantSearch, onCategoriesSele
                 <div className="input-group">
                     <input type="text" className="form-control" placeholder="search..." onChange={(e) => onInstantSearch(e)} value={searchVal} />
                     <div className="input-group-append">
-                        <button className="btn" type="button" onClick={onSearchTextCleared}><i className="fas fa-times"></i></button>
+                        <button className="btn" type="button" onClick={onSearchTextCleared} disabled={!searchVal || !searchVal.length}>
+                            <i className="fas fa-times"></i>
+                        </button>
                     </div>
                 </div>
             </div>

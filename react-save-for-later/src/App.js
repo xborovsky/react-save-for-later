@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import './App.css';
-import Tasks from './pages/tasks/Tasks';
 import NotesContainer from './pages/notes/NotesContainer';
 import CategoriesContainer from './pages/category-management/CategoriesContainer';
 import Login from './pages/login/Login';
@@ -37,7 +36,6 @@ class App extends Component {
         <MainMenu authentication={authentication} onLogout={() => this.handleLogout()} />
         <SecuredContent authentication={authentication}>
           <Switch>
-            <Route path='/tasks' component={Tasks}/>
             <Route path='/notes' component={NotesContainer}/>
             <Route path='/categories' component={CategoriesContainer}/>
           </Switch>

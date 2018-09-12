@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import { fetchAllNotesThunk, deleteNoteThunk, filterNotesThunk } from './redux/thunks';
 import { fetchCategoriesThunk } from '../category-management/redux/thunks';
-import { resetOffset } from './redux/actions';
 import WithEmptyDataHandlingComponent from '../../components/common/hoc/WithEmptyDataHandling';
 import NoteList from '../../components/note/note-list/NoteList';
 import NoteSearch from './NoteSearch';
@@ -20,8 +19,7 @@ class Notes extends Component {
     };
 
     componentDidMount() {
-        this.props.resetOffset();
-        this.props.filterNotes(this.props.offset);
+        this.props.filterNotes(0);
         this.props.fetchCategories();
     }
 
@@ -146,8 +144,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     filterNotes : (offset, text, categories) => dispatch(filterNotesThunk(offset, text, categories)),
     deleteNote : id => dispatch(deleteNoteThunk(id)),
-    fetchCategories : () => dispatch(fetchCategoriesThunk()),
-    resetOffset : () => dispatch(resetOffset())
+    fetchCategories : () => dispatch(fetchCategoriesThunk())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Notes));

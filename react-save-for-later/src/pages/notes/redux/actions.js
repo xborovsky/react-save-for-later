@@ -4,9 +4,10 @@ export const fetchNextNotes = () => ({
     type : constants.FETCH_NEXT_NOTES
 });
 
-export const fetchNotesSuccess = notes => ({
+export const fetchNotesSuccess = (offset, notes) => ({
     type : constants.FETCH_NOTES_SUCCESS,
-    payload : notes
+    payload : notes,
+    offset
 });
 
 export const fetchNotesError = error => ({
@@ -40,8 +41,4 @@ export const deleteNoteSuccess = () => ({
 export const deleteNoteError = error => ({
     type : constants.DELETE_NOTE_ERROR,
     error
-});
-
-export const resetOffset = () => ({
-    type : constants.RESET_OFFSET
 });

@@ -11,5 +11,3 @@ export const DELETE_NOTE_SUCCESS = 'delete-note-success';
 export const DELETE_NOTE_ERROR = 'delete-note-error';
 
 export const FILTER_NOTES = 'filter-notes';
-
-export const RESET_OFFSET = 'reset-offset';
