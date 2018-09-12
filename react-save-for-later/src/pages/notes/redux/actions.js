@@ -34,8 +34,9 @@ export const deleteNote = id => ({
     payload : id
 });
 
-export const deleteNoteSuccess = () => ({
-    type : constants.DELETE_NOTE_SUCCESS
+export const deleteNoteSuccess = id => ({
+    type : constants.DELETE_NOTE_SUCCESS,
+    id
 });
 
 export const deleteNoteError = error => ({

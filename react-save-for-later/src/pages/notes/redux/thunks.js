@@ -13,7 +13,7 @@ export const saveNoteThunk = (note) => {
 export const deleteNoteThunk = id => dispatch => {
     dispatch(actions.deleteNote(id));
     return deleteNote(id)
-        .then(result => dispatch(actions.deleteNoteSuccess()))
+        .then(result => dispatch(actions.deleteNoteSuccess(id)))
         .catch(error => dispatch(actions.deleteNoteError(error)))
 };
 

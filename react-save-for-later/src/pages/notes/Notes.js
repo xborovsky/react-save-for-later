@@ -28,10 +28,8 @@ class Notes extends Component {
     }
 
     handleDeleteNote = (id) => {
-        // TODO lepsie
         if (window.confirm('Do you really want to delete the selected note?')) {
-            this.props.deleteNote(id)
-                .then(() => this.props.fetchNotes());
+            this.props.deleteNote(id);
         }
     };
 

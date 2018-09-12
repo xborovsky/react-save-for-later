@@ -33,7 +33,9 @@ export const notesReducer = (state = initialState, action) => {
         case constants.DELETE_NOTE:
             return {...state, loading : true, error : false};
         case constants.DELETE_NOTE_SUCCESS:
-            return {...state, loading : false, error : false};
+            let notesCopy = [...state.notes];
+            notesCopy = notesCopy.filter((note) => note.id !== action.id);
+            return {...state, loading : false, error : false, notes : notesCopy};
         case constants.DELETE_NOTE_ERROR:
             return {...state, loading : false, error : true};
 
