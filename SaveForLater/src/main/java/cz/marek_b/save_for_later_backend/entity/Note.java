@@ -20,7 +20,8 @@ public class Note implements Serializable {
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_CREATED = "created";
-    public static final String COLUMN_CATEGORY = "category";
+    public static final String COLUMN_CATEGORY = "category_id";
+    public static final String COLUMN_USER_ID = "user_id";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +35,9 @@ public class Note implements Serializable {
     @ManyToOne
     @JoinColumn(name = COLUMN_CATEGORY, nullable = true)
     private Category category;
+    @ManyToOne
+    @JoinColumn(name = COLUMN_USER_ID, nullable = false)
+    private User user;
 
     public Note() {
     }
@@ -72,6 +76,14 @@ public class Note implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

@@ -3,6 +3,7 @@ package cz.marek_b.save_for_later_backend.service;
 import cz.marek_b.save_for_later_backend.dao.NoteDao;
 import cz.marek_b.save_for_later_backend.entity.Category;
 import cz.marek_b.save_for_later_backend.entity.Note;
+import cz.marek_b.save_for_later_backend.entity.User;
 import cz.marek_b.save_for_later_backend.util.DateUtils;
 import java.text.MessageFormat;
 import java.util.List;
@@ -20,15 +21,17 @@ public class NoteServiceImpl implements NoteService {
     private NoteDao noteDao;
 
     @Override
-    public List<Note> findAll(int offset) {
-        return noteDao.findAll(
+    public List<Note> findAll(User user, int offset) {
+        return noteDao.findByUser(
+            user,
             PageRequest.of(offset, DEFAULT_PAGE_SISE, Sort.by(Order.desc(Note.COLUMN_CREATED)))
-        ).getContent();
+        );
     }
 
     @Override
-    public Note createNote(String description, Category category) {
+    public Note createNote(User user, String description, Category category) {
         Note note = new Note();
+        note.setUser(user);
         note.setDescription(description);
         note.setCategory(category);
         note.setCreated(DateUtils.now());
@@ -56,8 +59,11 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public List<Note> find(String text, List<Long> categoryIds, int offset) {
-        return noteDao.findByTextAndCategories(text, categoryIds,
+    public List<Note> find(User user, String text, List<Long> categoryIds, int offset) {
+        System.out.println("user.getId(): " + user.getId());
+        System.out.println("text: " + text);
+        System.out.println("categoryIds: " + categoryIds);
+        return noteDao.findByTextAndCategories(user, text, categoryIds,
             PageRequest.of(offset, DEFAULT_PAGE_SISE, Sort.by(Order.desc(Note.COLUMN_CREATED)))
         ).getContent();
     }
