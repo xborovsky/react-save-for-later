@@ -34,7 +34,6 @@ class Notes extends Component {
     };
 
     handleInstantSearch = e => {
-        this.props.resetOffset();
         const timeout = this.state.instantSearchTimeout;
         if (timeout) {
             clearInterval(timeout);
@@ -54,12 +53,11 @@ class Notes extends Component {
     };
 
     handleSearchTextCleared = () => {
-        this.props.resetOffset();
         this.doSetFilterState(
             {search : ''},
             () => {
                 const newTimeout = setTimeout(() => {
-                    this.doFilter();
+                    this.doFilter(true);
                 }, 250);
                 this.setState({instantSearchTimeout : newTimeout});
             }
@@ -67,7 +65,6 @@ class Notes extends Component {
     };
 
     handleCategoriesSelected = selectedValues => {
-        this.props.resetOffset();
         var value = [];
         for (var i = 0, l = selectedValues.length; i < l; i++) {
             value.push(selectedValues[i].value);
@@ -75,15 +72,15 @@ class Notes extends Component {
         this.doSetFilterState(
             {categories : value},
             () => {
-                this.doFilter();
+                this.doFilter(true);
             }
         );
     };
 
-    doFilter = () => {
+    doFilter = (resetOffset) => {
         const { search, categories } = this.state.filter,
               { offset } = this.props;
-        this.props.filterNotes(offset, search, categories);
+        this.props.filterNotes(resetOffset ? 0 : offset, search, categories);
     };
 
     doSetFilterState = (obj, callback) => {

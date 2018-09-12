@@ -19,7 +19,9 @@ const NoteListItem = ({note, onDeleteNote}) =>
                     </div>
                 </div>
                 <p className="mb-1">{ ReactHtmlParser(urlify(note.description)) }</p>
-                <small><Category name={note.category.name} hexColor={note.category.colorHex} /></small>
+                { note.category &&
+                    <small><Category name={note.category.name} hexColor={note.category.colorHex} /></small>
+                }
             </li>
         </div>
     </div>
@@ -33,7 +35,7 @@ NoteListItem.propTypes = {
             id : PropTypes.number,
             name : PropTypes.string,
             hexColor : PropTypes.string
-        }).isRequired,
+        }),
         created : PropTypes.string
     }).isRequired,
     onDeleteNote : PropTypes.func.isRequired

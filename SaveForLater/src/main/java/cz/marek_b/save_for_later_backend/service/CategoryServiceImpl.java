@@ -1,7 +1,9 @@
 package cz.marek_b.save_for_later_backend.service;
 
 import cz.marek_b.save_for_later_backend.dao.CategoryDao;
+import cz.marek_b.save_for_later_backend.dao.NoteDao;
 import cz.marek_b.save_for_later_backend.entity.Category;
+import cz.marek_b.save_for_later_backend.entity.Note;
 import cz.marek_b.save_for_later_backend.util.DateUtils;
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -15,6 +17,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryDao categoryDao;
+    @Autowired
+    private NoteDao noteDao;
 
     @Override
     public List<Category> findAll() {
@@ -40,6 +44,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void deleteCategory(long id) {
+        List<Note> affectedNotes = noteDao.findByCategoryId(id);
+
+        affectedNotes.forEach((note) -> {
+            note.setCategory(null);
+        });
+        noteDao.saveAll(affectedNotes);
+
         categoryDao.deleteById(id);
     }
 

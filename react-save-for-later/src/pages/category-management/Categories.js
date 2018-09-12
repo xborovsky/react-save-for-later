@@ -15,8 +15,7 @@ class Categories extends Component {
 
     handleDeleteCategory = (id) => {
         if (window.confirm('Do you really want to delete the selected category?')) {
-            this.props.deleteCategory(id)
-                .then(() => this.props.fetchCategories());
+            this.props.deleteCategory(id);
         }
     };
 
