@@ -21,8 +21,10 @@ class CreateNote extends Component {
 
     componentDidMount() {
         getAllCategories()
-            .then(categories => this.setState({categories : categories.data}))
-        this.descriptionInput.focus();
+            .then(categories => this.setState({categories : categories.data}));
+        if (this.descriptionInput) {
+            this.descriptionInput.focus();
+        }
     }
 
     handleSubmit = (values) => {
