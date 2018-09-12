@@ -8,10 +8,12 @@ import Login from './pages/login/Login';
 import MainMenu from './components/menu/MainMenu';
 import SecuredContent from './components/SecuredContent';
 import { getData, remove } from './utils/session-storage-manager';
+import WithLoaderComponent from './components/common/hoc/WithLoader';
 
 class App extends Component {
   state = {
-    authentication : null
+    authentication : null,
+    loading : true
   }
 
   componentDidMount() {
@@ -20,7 +22,8 @@ class App extends Component {
 
   refreshAuthenticationStatus = () => {
     const data = getData('authentication');
-    this.setState({authentication : data ? JSON.parse(data) : null});
+    this.setState({authentication : data ? JSON.parse(data) : null, loading : false});
+
   }
 
   handleLogout = () => {
@@ -29,19 +32,21 @@ class App extends Component {
   };
 
   render() {
-    const { authentication } = this.state;
+    const { authentication, loading } = this.state;
 
     return (
-      <div className="App">
-        <MainMenu authentication={authentication} onLogout={() => this.handleLogout()} />
-        <SecuredContent authentication={authentication}>
-          <Switch>
-            <Route path='/notes' component={NotesContainer}/>
-            <Route path='/categories' component={CategoriesContainer}/>
-          </Switch>
-        </SecuredContent>
-        <Route path='/login' component={() => <Login onSuccess={() => this.refreshAuthenticationStatus()} />}/>
-      </div>
+      <WithLoaderComponent loading={loading}>
+        <div className="App">
+          <MainMenu authentication={authentication} onLogout={() => this.handleLogout()} />
+          <SecuredContent authentication={authentication}>
+            <Switch>
+              <Route path='/notes' component={NotesContainer}/>
+              <Route path='/categories' component={CategoriesContainer}/>
+            </Switch>
+          </SecuredContent>
+          <Route path='/login' component={() => <Login onSuccess={() => this.refreshAuthenticationStatus()} />}/>
+        </div>
+      </WithLoaderComponent>
     );
   }
 }
