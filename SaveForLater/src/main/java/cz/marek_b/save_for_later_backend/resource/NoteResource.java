@@ -2,9 +2,9 @@ package cz.marek_b.save_for_later_backend.resource;
 
 import com.google.common.collect.Lists;
 import cz.marek_b.save_for_later_backend.entity.Category;
-import cz.marek_b.save_for_later_backend.entity.Note;
 import cz.marek_b.save_for_later_backend.entity.User;
 import cz.marek_b.save_for_later_backend.form_model.NoteFormModel;
+import cz.marek_b.save_for_later_backend.response.FilteredNotes;
 import cz.marek_b.save_for_later_backend.service.CategoryService;
 import cz.marek_b.save_for_later_backend.service.NoteService;
 import cz.marek_b.save_for_later_backend.service.UserService;
@@ -41,7 +41,7 @@ public class NoteResource {
 
     @GetMapping
     @ResponseBody
-    public List<Note> filterNotes(
+    public FilteredNotes filterNotes(
             @RequestParam(value = "userId", required = true) Long userId,
             @RequestParam(value = "text", required = false, defaultValue = "") String text,
             @RequestParam(value = "category", required = false, defaultValue = "") Long[] categoriesIds,
@@ -54,7 +54,10 @@ public class NoteResource {
         }
 
         if (text.isEmpty() && categoriesIds.length == 0) {
-            return noteService.findAll(user, offset);
+            return new FilteredNotes(
+                noteService.findAll(user, offset),
+                noteService.countAll(user)
+            );
         }
 
         List<Long> categories = Arrays.asList(categoriesIds);
@@ -62,7 +65,10 @@ public class NoteResource {
             categories = Lists.transform(categoryService.findAll(), (Category category) -> category.getId() );
         }
 
-        return noteService.find(user, text, categories, offset);
+        return new FilteredNotes(
+            noteService.find(user, text, categories, offset),
+            noteService.count(user, text, categories)
+       );
     }
 
     @PostMapping("/new")

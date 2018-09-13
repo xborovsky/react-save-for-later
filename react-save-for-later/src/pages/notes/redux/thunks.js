@@ -20,6 +20,6 @@ export const deleteNoteThunk = id => dispatch => {
 export const filterNotesThunk = (offset, text, categories) => dispatch => {
     dispatch(actions.fetchNextNotes());
     return fetchNotes(text, categories, offset)
-        .then(result => dispatch(actions.fetchNotesSuccess(offset, result.data)))
+        .then(result => dispatch(actions.fetchNotesSuccess(offset, result.data.notes, result.data.totalNotes)))
         .catch(error => dispatch(actions.fetchNotesError(error)))
 };

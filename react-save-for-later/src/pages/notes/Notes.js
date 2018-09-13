@@ -45,7 +45,7 @@ class Notes extends Component {
             {search : val},
             () => {
                 const newTimeout = setTimeout(() => {
-                    this.doFilter();
+                    this.doFilter(true);
                 }, 250);
                 this.setState({instantSearchTimeout : newTimeout});
             }
@@ -118,7 +118,7 @@ class Notes extends Component {
                     { error ? <Alert type="danger" message="Error loading data!" /> :
                         loading ? <i className="fa fa-spinner fa-spin"></i> :
                             hasMoreRecords && <button type="button" className="btn btn-primary"
-                                onClick={() => this.doFilter()}>Load next...</button>
+                                onClick={() => this.doFilter(false)}>Load next...</button>
                     }
                 </div>
             </div>

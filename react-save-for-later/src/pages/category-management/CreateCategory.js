@@ -70,7 +70,7 @@ class CreateCategory extends Component {
     };
 
     navigateToList = () => {
-        this.props.history.push('/');
+        this.props.history.push('/categories');
     };
 
     render() {

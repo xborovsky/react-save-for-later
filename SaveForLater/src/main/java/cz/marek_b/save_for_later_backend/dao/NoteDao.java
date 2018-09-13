@@ -13,10 +13,16 @@ public interface NoteDao extends JpaRepository<Note, Long> {
     @Query("SELECT n FROM Note n WHERE n.user = ?1 AND n.description LIKE CONCAT('%', ?2 ,'%') AND n.category.id IN ?3")
     Page<Note> findByTextAndCategories(User user, String text, List<Long> categoryIds, Pageable pageable);
 
+    @Query("SELECT COUNT(n) FROM Note n WHERE n.user = ?1 AND n.description LIKE CONCAT('%', ?2 ,'%') AND n.category.id IN ?3")
+    long countByTextAndCategories(User user, String text, List<Long> categoryIds);
+
     @Query("SELECT n FROM Note n WHERE n.category.id = ?2")
     List<Note> findByCategoryId(long categoryId);
 
     @Query("SELECT n FROM Note n WHERE n.user = ?1")
     List<Note> findByUser(User user, Pageable pageable);
+
+    @Query("SELECT COUNT(n) FROM Note n WHERE n.user = ?1")
+    long countByUser(User user);
 
 }

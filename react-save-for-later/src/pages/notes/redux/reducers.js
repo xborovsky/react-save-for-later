@@ -13,12 +13,13 @@ export const notesReducer = (state = initialState, action) => {
         case constants.FETCH_NEXT_NOTES:
             return {...state, loading : true, error : false};
         case constants.FETCH_NOTES_SUCCESS:
+            const newNotes = action.offset === 0 ? action.payload : [...state.notes, ...action.payload];
             return {...state,
-                notes : action.offset === 0 ? action.payload : [...state.notes, ...action.payload],
+                notes : newNotes,
                 offset: (action.offset === 0 ? 0 : state.offset) + action.payload.length,
                 loading : false,
                 error : false,
-                hasMoreRecords : action.payload.length > 0
+                hasMoreRecords : action.totalNotes > newNotes.length
             };
         case constants.FETCH_NOTES_ERROR:
             return {...state, loading : false, error : true};

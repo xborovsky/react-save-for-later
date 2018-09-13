@@ -6,9 +6,11 @@ import cz.marek_b.save_for_later_backend.entity.User;
 import java.util.List;
 
 public interface NoteService {
-    int DEFAULT_PAGE_SISE = 10;
+    int DEFAULT_PAGE_SISE = 5;
 
     List<Note> findAll(User user, int offset);
+
+    long countAll(User user);
 
     Note createNote(User user, String description, Category category);
 
@@ -17,4 +19,6 @@ public interface NoteService {
     Note findNote(long id);
 
     List<Note> find(User user, String text, List<Long> categoryIds, int offset);
+
+    long count(User user, String text, List<Long> categoryIds);
 }

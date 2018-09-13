@@ -5,11 +5,13 @@ import cz.marek_b.save_for_later_backend.entity.Category;
 import cz.marek_b.save_for_later_backend.entity.Note;
 import cz.marek_b.save_for_later_backend.entity.User;
 import cz.marek_b.save_for_later_backend.util.DateUtils;
+import cz.marek_b.save_for_later_backend.util.SqlHelper;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
@@ -22,10 +24,12 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public List<Note> findAll(User user, int offset) {
-        return noteDao.findByUser(
-            user,
-            PageRequest.of(offset, DEFAULT_PAGE_SISE, Sort.by(Order.desc(Note.COLUMN_CREATED)))
-        );
+        return noteDao.findByUser(user, buildPageRequest(offset));
+    }
+
+    @Override
+    public long countAll(User user) {
+        return noteDao.countByUser(user);
     }
 
     @Override
@@ -60,12 +64,21 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public List<Note> find(User user, String text, List<Long> categoryIds, int offset) {
-        System.out.println("user.getId(): " + user.getId());
-        System.out.println("text: " + text);
-        System.out.println("categoryIds: " + categoryIds);
         return noteDao.findByTextAndCategories(user, text, categoryIds,
-            PageRequest.of(offset, DEFAULT_PAGE_SISE, Sort.by(Order.desc(Note.COLUMN_CREATED)))
+            buildPageRequest(offset)
         ).getContent();
+    }
+
+    @Override
+    public long count(User user, String text, List<Long> categoryIds) {
+        return noteDao.countByTextAndCategories(user, text, categoryIds);
+    }
+
+    private Pageable buildPageRequest(int offset) {
+        return PageRequest.of(
+            SqlHelper.calculatePageNum(offset, DEFAULT_PAGE_SISE),
+            DEFAULT_PAGE_SISE, Sort.by(Order.desc(Note.COLUMN_CREATED))
+        );
     }
 
 }

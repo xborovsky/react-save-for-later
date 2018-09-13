@@ -4,10 +4,10 @@ export const fetchNextNotes = () => ({
     type : constants.FETCH_NEXT_NOTES
 });
 
-export const fetchNotesSuccess = (offset, notes) => ({
+export const fetchNotesSuccess = (offset, notes, totalNotes) => ({
     type : constants.FETCH_NOTES_SUCCESS,
     payload : notes,
-    offset
+    offset, totalNotes
 });
 
 export const fetchNotesError = error => ({
